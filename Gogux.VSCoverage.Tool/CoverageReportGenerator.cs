@@ -26,11 +26,8 @@ namespace Gogux.VSCoverage.Tool
 
             var completeXmlReportFileName = Path.Combine(_outputPath, Path.Combine(_outputPath, $"{Path.GetFileNameWithoutExtension(_sourceReportPath)}.xml"));
             var commandText = $"/C {codeCoveragePath} analyze /output:\"{completeXmlReportFileName}\" \"{_sourceReportPath}\"";
-            
-            var cmdStartInfo = new ProcessStartInfo();
-            cmdStartInfo.FileName = "cmd.exe";
-            cmdStartInfo.Arguments = commandText;
 
+            var cmdStartInfo = new ProcessStartInfo { FileName = "cmd.exe", Arguments = commandText };
             var cmd = new Process { StartInfo = cmdStartInfo };
             cmd.Start();
             cmd.WaitForExit();
@@ -61,7 +58,7 @@ namespace Gogux.VSCoverage.Tool
             
             var sanitizedValue = outputPath.Trim();
             
-            if (!Directory.Exists(outputPath)) throw new ArgumentException($"Directory {outputPath} not found");
+            if (!Directory.Exists(sanitizedValue)) throw new ArgumentException($"Directory {sanitizedValue} not found");
 
             return sanitizedValue;
         }
