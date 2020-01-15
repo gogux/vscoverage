@@ -8,7 +8,7 @@ namespace Gogux.VSCoverage.Tool
     public class Options
     {
         [Option('r', "coverageReportPath", Required = true, HelpText = "Code coverage (.coverage) file path")]
-        public string CoverageReportPath { get; set; }
+        public string CoverageReportPaths { get; set; }
         
         [Option('o', "outputPath", Required = false, HelpText = "Output path")]
         public string OutputPath { get; set; }
@@ -19,7 +19,10 @@ namespace Gogux.VSCoverage.Tool
         public static void Main(string[] args)
         {
             Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(options => new CoverageReportGenerator(options.CoverageReportPath, options.OutputPath).Generate())
+                .WithParsed(options => new CoverageReportGenerator(
+                        options.CoverageReportPaths.Split(';', StringSplitOptions.RemoveEmptyEntries),
+                        options.OutputPath)
+                    .Generate())
                 .WithNotParsed(DisplayErrors);
         }
 
